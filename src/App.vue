@@ -1,9 +1,11 @@
 <template>
-    <div>
+    <div class="app">
         <!-- <Header /> -->
         <!-- <OL /> -->
-        <Point />
+        <!-- <Point /> -->
         <!-- <Three /> -->
+        <Basic />
+        <!-- <MixHtml /> -->
         <article>
             <!-- content.. -->
         </article>
@@ -15,12 +17,16 @@
 import OL from './components/ol'
 import Point from './components/point'
 import Three from './components/three.vue'
+import Basic from './components/1basic.vue'
+import MixHtml from './components/2mixHtml.vue'
 export default {
     components: {
         // Header,
         OL,
         Point,
-        Three
+        Three,
+        Basic,
+        MixHtml
     }
 }
 </script>
@@ -34,5 +40,12 @@ export default {
 
 body {
     position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+.app {
+    width: 100%;
+    height: 100%;
 }
 </style>

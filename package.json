@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@tweenjs/tween.js": "^18",
+    "gsap": "^3.12.2",
     "jszip": "^3.10.1",
     "jszip-utils": "^0.1.0",
     "ol": "^6.15.1",
