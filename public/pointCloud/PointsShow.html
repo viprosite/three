@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+</head>
+<body style="overflow:hidden;overflow-y:hidden">
+    <canvas width="500px" height="300px" hidden="hidden" id="canvas">你的浏览器不支持canvas</canvas>
+    <div><span style="float:right;color:#fff">FPS:<label id="fpsLable">0</label></span></div>
+    <script src="js/three.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/jszip/jszip.js"></script>
+    <script src="js/PointsLoader.js"></script>
+    <script>
+       
+        //场景,相机,渲染器,控制器,材质
+        var scene, camera, renderer, controls, material;
+
+        var clock = new THREE.Clock();
+        var fpsLb = $("#fpsLable");
+        var renderT = 1 / 30;
+        var timeS = 0;
+        let zip = new JSZip();
+
+        var sdgParam;
+
+        init();
+        animate();
+        // FUNCTIONS
+        function init() {
+            // SCENE
+            scene = new THREE.Scene();
+            // CAMERA
+            var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+            var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+            camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+            scene.add(camera);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+            document.body.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+            // LIGHT
+            var light = new THREE.PointLight(0xffffff);
+            light.position.set(500, 1000, 1500);
+            scene.add(light);
+
+            //material = new THREE.SpriteMaterial();
+            material = new THREE.PointsMaterial({ size: 0.2, vertexColors: true, color: 0xffffff });
+            camera.position.set(0, 600, 200);
+            controls.target = new THREE.Vector3(0, 0, 0);
+            //controls.rotateLeft(1.56);
+        }
+
+
+        function animate() {
+            requestAnimationFrame(animate);
+            render();
+            update();
+        }
+
+        function update() {
+            controls.update();
+        }
+
+        function render() {
+            var T = clock.getDelta();
+            timeS = timeS + T;
+            // requestAnimationFrame默认调用render函数60次，通过时间判断，降低renderer.render执行频率
+            if (timeS > renderT) {
+                // 控制台查看渲染器渲染方法的调用周期，也就是间隔时间是多少
+                //console.log(`调用.render时间间隔`, timeS * 1000 + '毫秒');
+
+                fpsLb.html((timeS * 1000).toFixed());
+                renderer.render(scene, camera);
+                timeS = 0;
+            }
+        }
+        importMesh(getQueryStringByName("path"));
+    </script>
+</body>
+</html>
